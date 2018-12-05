@@ -21,24 +21,6 @@ public class SimpleUtils {
         return object;
     }
 
-    public static boolean download(URL url, File file) throws Exception {
-        if (!isInternetAvailable()) {
-            throw new IllegalArgumentException("No internet connection found!");
-        }
-        if (!isSiteOnline(url)) {
-            return false;
-        }
-        ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-        FileOutputStream fos = new FileOutputStream(file);
-        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-        return true;
-    }
-
-    public static boolean download(String url, String file) throws Exception {
-        return download(new URL(url), new File(file));
-
-    }
-
     public static boolean isInternetAvailable() {
         return isSiteOnline("https://www.google.com/");
     }
@@ -68,7 +50,6 @@ public class SimpleUtils {
         if (!isValidURL(s)) {
             return "http://" + s;
         }
-
         return s;
     }
 
@@ -82,10 +63,10 @@ public class SimpleUtils {
     }
 
     public static String getPathToM2() {
-        return System.getProperty("user.home") + File.separator + ".m2/";
+        return System.getProperty("user.home") + File.separator + ".m2"+ File.separator;
     }
 
     public static String getPathToLocalRepo() {
-        return getPathToM2() + File.separator + "repository";
+        return getPathToM2() + File.separator + "repository"+ File.separator;
     }
 }

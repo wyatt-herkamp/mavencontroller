@@ -4,7 +4,10 @@ Maven Controller is a open source Maven Depend grabber. This library will allow 
 An extension will be made that adds it to your ClassLoader specified or the default one.
 
 
-Is Ready: FALSE
+Is Ready: READY FOR TESTING
+
+### Planned Features 
+* Read maven-metadata.xml to get latest version
 
 ## Maven
 ```xml

@@ -66,26 +66,34 @@ public class Dependency {
             url += "/";
         }
         url += dependency.getURLPath() + "/";
-        try {
-            if (!SimpleUtils.download(url + RepositoryFile.POM.parse(dependency.artifactId, dependency.version), System.getProperty("java.io.tmpdir") + File.separator + "test.pom")) {
-                return false;
-            }
-        } catch (Exception e) {
+        //Just throw it out if the main jar is missing;
+        SimpleHTTPClient httpClient = SimpleHTTPClient.create(url + RepositoryFile.JAR.parse(dependency.artifactId, dependency.version));
+        if (httpClient.getResponseCode() != 200) {
             return false;
         }
         for (RepositoryFile repositoryFile : RepositoryFile.values()) {
-            new File(SimpleUtils.getPathToLocalRepo() + File.separator + dependency.getSystemPath()).mkdirs();
-            try {
-                SimpleUtils.download(url + repositoryFile.parse(dependency.artifactId, dependency.version), SimpleUtils.getPathToLocalRepo() + File.separator + dependency.getSystemPath() + File.separator + repositoryFile.parse(dependency.artifactId, dependency.version));
-            } catch (Exception e) {
-                return false;
+            new File(SimpleUtils.getPathToLocalRepo() + dependency.getSystemPath()).mkdirs();
+            SimpleHTTPClient repoFile = SimpleHTTPClient.create(url + repositoryFile.parse(dependency.artifactId, dependency.version));
+            if (repoFile.getResponseCode() != 200) {
+                continue;
             }
+            repoFile.download(new File(SimpleUtils.getPathToLocalRepo() + dependency.getSystemPath() + File.separator + repositoryFile.parse(dependency.artifactId, dependency.version)));
         }
         return true;
     }
 
     /**
+     * Downloads a depend from accessor
+     * @param dependAccessor the accessor to download from
+     * @return did it work
+     */
+    public static boolean download(DependAccessor dependAccessor) {
+        return download(dependAccessor.getDepend(), dependAccessor.getRepository());
+    }
+
+    /**
      * Tries to download with cached repos
+     *
      * @param dependency Depend to download
      * @return if it worked
      */
@@ -101,8 +109,9 @@ public class Dependency {
 
     /**
      * The file
-     * @param dependency depend to locate
-      * @param repositoryFile the file type
+     *
+     * @param dependency     depend to locate
+     * @param repositoryFile the file type
      * @return the file
      */
     public static File getFile(Dependency dependency, RepositoryFile repositoryFile) {
@@ -111,6 +120,7 @@ public class Dependency {
 
     /**
      * is it installed on the local repo
+     *
      * @param dependency the depend to check
      * @return is it installed
      */

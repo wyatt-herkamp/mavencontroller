@@ -6,11 +6,21 @@ import java.util.List;
 
 /**
  * This represents a Repository
+ *
  * @author KingTux
  */
 public class Repository {
     //This is a list of Repositories that has been loaded onto  mavencontroller. It will be queried When downloading a dependency.
-    protected static List<Repository> repositories = new ArrayList<>();
+    protected static List<Repository> repositories;
+    private static boolean addRepo = true;
+    public static final Repository JITPACK, CENTRAL;
+
+    static {
+        repositories = new ArrayList<>();
+        JITPACK = Repository.of("https://jitpack.io", "jitpack.io");
+        CENTRAL = Repository.of("https://repo.maven.apache.org/maven2/", "maven");
+    }
+
     private String urlToRepo, id;
 
     private Repository() {
@@ -19,8 +29,9 @@ public class Repository {
 
     /**
      * Creates a repo
+     *
      * @param url the url
-     * @param id id of repo
+     * @param id  id of repo
      * @return the repository object
      */
     public static Repository of(final String url, final String id) {
@@ -36,7 +47,9 @@ public class Repository {
         Repository repository = new Repository();
         repository.urlToRepo = SimpleUtils.fixWebsiteURL(url);
         repository.id = id;
-        repositories.add(repository);
+        if (addRepo) {
+            repositories.add(repository);
+        }
         return repository;
     }
 
@@ -47,8 +60,13 @@ public class Repository {
         repositories.clear();
     }
 
+    public static void disableCache() {
+        addRepo = false;
+    }
+
     /**
      * grabs the url to repo
+     *
      * @return the url to repo
      */
     public String getUrlToRepo() {
@@ -57,8 +75,8 @@ public class Repository {
 
     /**
      * repo id
-     * @return the repo id
      *
+     * @return the repo id
      */
     public String getId() {
         return id;
