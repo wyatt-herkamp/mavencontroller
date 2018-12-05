@@ -1,5 +1,10 @@
 package me.kingtux.mavencontroller;
 
+/**
+ * The different types of files you will see in a Depend folder
+ *
+ * @author KingTux
+ */
 public enum RepositoryFile {
     JAR("%1$s-%2$s.jar"),
     POM("%1$s-%2$s.pom"),

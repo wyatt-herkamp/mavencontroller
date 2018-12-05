@@ -1,8 +1,6 @@
 package me.kingtux.mavencontroller;
 
 import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * This represents a depend
@@ -18,22 +16,32 @@ public class Dependency {
 
     }
 
-    public URL getURL() {
-        try {
-            return new URL(getURLPath());
-        } catch (MalformedURLException e) {
-            return null;
-        }
-    }
-
+    /**
+     * Gets the path to the file that would be under the local repository
+     *
+     * @return the path under .m2/repository/
+     */
     public String getSystemPath() {
         return groupId.replace(".", File.separator) + File.separator + artifactId + File.separator + version;
     }
 
+    /**
+     * The path that it would be online
+     *
+     * @return The path that it would be online so REPO/THIS
+     */
     public String getURLPath() {
         return groupId.replace(".", "/") + "/" + artifactId + "/" + version;
     }
 
+    /**
+     * Creates an Dependency Object
+     *
+     * @param groupId    the group id of the the depend
+     * @param artifactId the artifactId of the depend
+     * @param version    version
+     * @return the depend object
+     */
     public static Dependency of(String groupId, String artifactId, String version) {
         Dependency dependency = new Dependency();
         dependency.groupId = groupId;
@@ -44,6 +52,13 @@ public class Dependency {
         return dependency;
     }
 
+    /**
+     * Downloads the depend with the object
+     *
+     * @param dependency
+     * @param repository
+     * @return
+     */
     public static boolean download(Dependency dependency, Repository repository) {
 
         String url = repository.getUrlToRepo();
@@ -51,6 +66,13 @@ public class Dependency {
             url += "/";
         }
         url += dependency.getURLPath() + "/";
+        try {
+            if (!SimpleUtils.download(url + RepositoryFile.POM.parse(dependency.artifactId, dependency.version), System.getProperty("java.io.tmpdir") + File.separator + "test.pom")) {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
         for (RepositoryFile repositoryFile : RepositoryFile.values()) {
             new File(SimpleUtils.getPathToLocalRepo() + File.separator + dependency.getSystemPath()).mkdirs();
             try {
@@ -62,6 +84,11 @@ public class Dependency {
         return true;
     }
 
+    /**
+     * Tries to download with cached repos
+     * @param dependency Depend to download
+     * @return if it worked
+     */
     public static boolean download(Dependency dependency) {
 
         for (Repository repository : Repository.repositories) {
@@ -72,11 +99,22 @@ public class Dependency {
         return false;
     }
 
+    /**
+     * The file
+     * @param dependency depend to locate
+      * @param repositoryFile the file type
+     * @return the file
+     */
     public static File getFile(Dependency dependency, RepositoryFile repositoryFile) {
         return new File(new File(new File(SimpleUtils.getPathToLocalRepo()), dependency.getSystemPath()), repositoryFile.parse(dependency.artifactId, dependency.version));
     }
 
+    /**
+     * is it installed on the local repo
+     * @param dependency the depend to check
+     * @return is it installed
+     */
     public static boolean isInstalledOnLocal(Dependency dependency) {
-        return getFile(dependency, RepositoryFile.POM).exists()&& getFile(dependency, RepositoryFile.JAR).exists();
+        return getFile(dependency, RepositoryFile.POM).exists() && getFile(dependency, RepositoryFile.JAR).exists();
     }
 }

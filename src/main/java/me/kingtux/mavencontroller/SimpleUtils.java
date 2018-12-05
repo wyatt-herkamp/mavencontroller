@@ -21,24 +21,22 @@ public class SimpleUtils {
         return object;
     }
 
-    public static void download(URL url, File file) throws Exception {
+    public static boolean download(URL url, File file) throws Exception {
         if (!isInternetAvailable()) {
             throw new IllegalArgumentException("No internet connection found!");
         }
         if (!isSiteOnline(url)) {
-            return;
+            return false;
         }
         ReadableByteChannel rbc = Channels.newChannel(url.openStream());
         FileOutputStream fos = new FileOutputStream(file);
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        return true;
     }
 
-    public static void download(String url, String file) {
-        try {
-            download(new URL(url), new File(file));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public static boolean download(String url, String file) throws Exception {
+        return download(new URL(url), new File(file));
+
     }
 
     public static boolean isInternetAvailable() {
