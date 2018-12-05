@@ -1,4 +1,4 @@
-#Maven Controller
+# Maven Controller
 Maven Controller is a open source Maven Depend grabber. This library will allow you to grab the jar file from online and install to your local repository or if it already present will just return the path.
 
 An extension will be made that adds it to your ClassLoader specified or the default one.
@@ -8,10 +8,10 @@ Is Ready: FALSE
 
 ## Maven
 ```xml
-   <repository>
+   **<repository>
       <id>kingtux-repo</id>
       <url>http://repo.kingtux.me/repository/maven-public/</url>
-    </repository>
+    </repository>**
     
     <dependency>
       <groupId>me.kingtux</groupId>
