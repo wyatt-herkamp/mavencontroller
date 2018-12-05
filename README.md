@@ -8,10 +8,10 @@ Is Ready: FALSE
 
 ## Maven
 ```xml
-   **<repository>
+   <repository>
       <id>kingtux-repo</id>
       <url>http://repo.kingtux.me/repository/maven-public/</url>
-    </repository>**
+    </repository>
     
     <dependency>
       <groupId>me.kingtux</groupId>
