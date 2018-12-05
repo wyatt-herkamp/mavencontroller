@@ -105,18 +105,4 @@
             </resource>
         </resources>
     </build>
-    <dependencies>
-        <dependency>
-            <groupId>me.kingtux</groupId>
-            <artifactId>SimpleAnnotation</artifactId>
-            <version>1.1</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
-    <repositories>
-        <repository>
-            <id>kingtux-repo</id>
-            <url>http://repo.kingtux.me/repository/maven-public/</url>
-        </repository>
-    </repositories>
 </project>
