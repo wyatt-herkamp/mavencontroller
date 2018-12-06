@@ -12,7 +12,6 @@ import java.util.List;
 public class Repository {
     //This is a list of Repositories that has been loaded onto  mavencontroller. It will be queried When downloading a dependency.
     protected static List<Repository> repositories;
-    private static boolean addRepo = true;
     public static final Repository JITPACK, CENTRAL;
 
     static {
@@ -26,7 +25,6 @@ public class Repository {
     private Repository() {
 
     }
-
     /**
      * Creates a repo
      *
@@ -35,6 +33,18 @@ public class Repository {
      * @return the repository object
      */
     public static Repository of(final String url, final String id) {
+        return of(url, id, true);
+    }
+
+    /**
+     * Creates a repo
+     *
+     * @param url the url
+     * @param id  id of repo
+     * @param save To save the repository in memory
+     * @return the repository object
+     */
+    public static Repository of(final String url, final String id, boolean save) {
         try {
             URL url1 = new URL(url);
             if (!SimpleUtils.isSiteOnline(url1)) {
@@ -47,7 +57,7 @@ public class Repository {
         Repository repository = new Repository();
         repository.urlToRepo = SimpleUtils.fixWebsiteURL(url);
         repository.id = id;
-        if (addRepo) {
+        if (save) {
             repositories.add(repository);
         }
         return repository;
@@ -60,9 +70,6 @@ public class Repository {
         repositories.clear();
     }
 
-    public static void disableCache() {
-        addRepo = false;
-    }
 
     /**
      * grabs the url to repo

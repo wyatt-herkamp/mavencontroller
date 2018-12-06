@@ -84,6 +84,7 @@ public class Dependency {
 
     /**
      * Downloads a depend from accessor
+     *
      * @param dependAccessor the accessor to download from
      * @return did it work
      */
@@ -116,6 +117,16 @@ public class Dependency {
      */
     public static File getFile(Dependency dependency, RepositoryFile repositoryFile) {
         return new File(new File(new File(SimpleUtils.getPathToLocalRepo()), dependency.getSystemPath()), repositoryFile.parse(dependency.artifactId, dependency.version));
+    }
+    /**
+     * The file
+     *
+     * @param dependency     depend to locate
+     * @param repositoryFile the file type
+     * @return the file
+     */
+    public static File getFile(DependAccessor dependency, RepositoryFile repositoryFile) {
+        return getFile(dependency.getDepend(), repositoryFile);
     }
 
     /**

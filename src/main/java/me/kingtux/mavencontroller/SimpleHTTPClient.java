@@ -12,7 +12,7 @@ import java.nio.channels.ReadableByteChannel;
 /***
  * This is just and internal library for mavencontroller
  *
- *
+ * @author KingTux
  */
 public class SimpleHTTPClient {
     private HttpURLConnection urlConnection;
