@@ -13,7 +13,7 @@ Is Ready: READY FOR TESTING
 ```xml
    <repository>
       <id>kingtux-repo</id>
-      <url>http://repo.kingtux.me/repository/maven-public/</url>
+      <url>https://repo.kingtux.me/storages/maven/kingtux-repo</url>
     </repository>
     
     <dependency>
@@ -27,7 +27,7 @@ Is Ready: READY FOR TESTING
 ## Gradle
 ```
 repositories {
-  maven { url 'http://repo.kingtux.me/repository/maven-public/' }
+  maven { url 'https://repo.kingtux.me/storages/maven/kingtux-repo' }
 }
 
 dependencies {
